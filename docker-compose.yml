@@ -1,0 +1,18 @@
+version: "3.9"
+
+# app is name of service. We want to build docker file inside current directory
+# maps 8000 from my machine to docker
+# volumes maps the app from me to docker
+# command
+services:
+  app:
+    build:
+      context: .
+      args:
+        - DEV=true
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
