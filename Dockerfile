@@ -16,14 +16,21 @@ EXPOSE 8000
 
 # The ARG was added to handle the flake usage (see also docker-compose) which will be utilized
 # only in development
+# Added lines to include packages for postgresql connections and also remove them once
+# they're installed and running to keep docker lightweight
+# first line is for psycopg which stays while running the other one is temporary (.tmp-build-dev)
 ARG DEV=false
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
+    apk add --update --no-cache postgresql-client && \ 
+    apk add --update --no-cache --virtual .tmp-build-dev \
+        build-base postgresql-dev musl-dev && \
     /py/bin/pip install -r /tmp/requirements.txt && \
     if [ $DEV = "true" ]; \
         then /py/bin/pip install -r /tmp/requirements.dev.txt ; \
     fi && \
     rm -rf /tmp && \
+    apk del .tmp-build-dev && \
     adduser \
         --disabled-password \
         --no-create-home \
