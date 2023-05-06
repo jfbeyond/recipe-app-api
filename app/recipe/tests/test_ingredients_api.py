@@ -101,8 +101,8 @@ class PrivateIngredientsApiTests(TestCase):
 
     def test_filter_ingrdients_assigned_to_recipes(self):
         """Test listing ingredients by those assigned to recipes"""
-        in1 = Ingredient.objects.create(self=self.user, name='Apples')
-        in2 = Ingredient.objects.create(self=self.user, name='Turkey')
+        in1 = Ingredient.objects.create(user=self.user, name='Apples')
+        in2 = Ingredient.objects.create(user=self.user, name='Turkey')
         recipe = Recipe.objects.create(
             title='Apple Crumble',
             time_minutes=5,
@@ -129,7 +129,7 @@ class PrivateIngredientsApiTests(TestCase):
             user=self.user,
         )
         recipe2 = Recipe.objects.create(
-            title='Herbs Eggs',
+            title='Herb Eggs',
             time_minutes=20,
             price=Decimal('4.00'),
             user=self.user,
