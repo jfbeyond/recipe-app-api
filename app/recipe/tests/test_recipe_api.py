@@ -339,7 +339,7 @@ class PrivateRecipeApiTests(TestCase):
             ).exists()
             self.assertTrue(exists)
 
-    def test_Create_ingredient_on_update(self):
+    def test_create_ingredient_on_update(self):
         """Test creating an ingredient when updating a recipe"""
         recipe = create_recipe(user=self.user)
 
@@ -352,7 +352,7 @@ class PrivateRecipeApiTests(TestCase):
         self.assertIn(new_ingredient, recipe.ingredients.all())
 
     def test_update_recipe_assign_ingredient(self):
-        """Test assigning an existing ingredient when updateing a recipe"""
+        """Test assigning an existing ingredient when updating a recipe"""
         ingredient1 = Ingredient.objects.create(user=self.user, name='Pepper')
         recipe = create_recipe(user=self.user)
         recipe.ingredients.add(ingredient1)
@@ -409,7 +409,7 @@ class PrivateRecipeApiTests(TestCase):
         r2.ingredients.add(in2)
         r3 = create_recipe(user=self.user, title='Red Lentil Daal')
 
-        params = {'ingredients': f'{in1},{in2}'}
+        params = {'ingredients': f'{in1.id},{in2.id}'}
         res = self.client.get(RECIPES_URL, params)
 
         s1 = RecipeSerializer(r1)
@@ -450,7 +450,7 @@ class ImageUploadTests(TestCase):
         self.assertIn('image', res.data)
         self.assertTrue(os.path.exists(self.recipe.image.path))
 
-    def test_upload_imagae_bad_request(self):
+    def test_upload_image_bad_request(self):
         """Test uploading invalid image"""
         url = image_upload_url(self.recipe.id)
         payload = {'image': 'notanimage'}
